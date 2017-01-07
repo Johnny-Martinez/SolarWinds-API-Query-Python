@@ -2,8 +2,8 @@ import orionsdk
 from orionsdk import SwisClient
 import requests
 import csv
-#input access credentials
-npm_server = '10.10.01.100'
+#input access getCredentials
+npm_server = '10.10.10.10'
 username = ''
 password = ''
 OutputFileName = 'output.csv'
@@ -27,6 +27,18 @@ def getUnknownNodes():
         except(KeyError):
             print "Error"
 
+def getPollerStats():
+    writeCSV(['EngineID','IP','CurrentUsage', 'IsExceeded', 'ScaleFactor','Nodes', 'NodePollInterval'])
+    results = swis.query("SELECT EngineID, E.IP, CurrentUsage, IsExceeded, P.ScaleFactor, E.Nodes, E.NodePollInterval  FROM Orion.PollingUsage P JOIN orion.Engines E on E.EngineID=P.EngineID")
+    try:
+        for row in results['results']:
+            writeCSV([row['EngineID'], row['IP'], row['CurrentUsage'], row['IsExceeded'], row['ScaleFactor'], row['Nodes'], row['NodePollInterval']])
+        return results
+    except(KeyError):
+        try:
+            print results['Message']
+        except(KeyError):
+            print "Error"
 
 def getPollers():
     writeCSV(['EngineID','Pollers','IP'])
@@ -126,4 +138,4 @@ def getCredentialsByName(cred):
 requests.packages.urllib3.disable_warnings()
 if __name__ == '__main__':
     #Type function name below and save and build to get results
-    getUnknownNodes()
+    getPollerStats()
