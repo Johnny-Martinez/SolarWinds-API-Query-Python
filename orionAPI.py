@@ -3,8 +3,8 @@ from orionsdk import SwisClient
 import requests
 import csv
 #input access getCredentials
-npm_server = '10.10.10.10'
-username = ''
+npm_server = '10.248.1.106'
+username = 'admin'
 password = ''
 OutputFileName = 'output.csv'
 
@@ -138,4 +138,4 @@ def getCredentialsByName(cred):
 requests.packages.urllib3.disable_warnings()
 if __name__ == '__main__':
     #Type function name below and save and build to get results
-    getPollerStats()
+    getNodeGroups()
